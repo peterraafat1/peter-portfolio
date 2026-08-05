@@ -1,0 +1,723 @@
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Saleh — Roblox Scripter</title>
+<meta name="description" content="I build combat, backend, and OOP systems for Roblox games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+body { margin: 0; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+h1, h2, p { margin: 0; }
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #0b0b0c;
+  --bg-tint: #131315;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.16);
+  --text-primary: #ececea;
+  --text-secondary: #a3a3a0;
+  --text-tertiary: #6b6b69;
+  --accent: #d17d3f;
+  --accent-bright: #e69a5f;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  --max-width: 860px;
+  --nav-height: 66px;
+}
+
+/* ---------- Base ---------- */
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: rgba(209,125,63,0.25); color: var(--accent-bright); }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(30px, 4vw, 42px);
+  letter-spacing: -0.01em;
+}
+
+.section-lede {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+.section-head { margin-bottom: 60px; }
+
+/* ---------- Sections ---------- */
+.section { padding-top: 150px; padding-bottom: 150px; }
+.section-tint { background: var(--bg-tint); }
+@media (max-width: 640px) {
+  .section { padding-top: 90px; padding-bottom: 90px; }
+  .section-head { margin-bottom: 44px; }
+}
+
+/* ---------- Scroll reveal ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  background: rgba(11,11,12,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a:not(.nav-cta), .nav-links button:not(.nav-cta) {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.nav-links a:not(.nav-cta):hover,
+.nav-links a.active { color: var(--text-primary); }
+
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 9px 16px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.nav-cta:hover { background: var(--accent-bright); }
+
+.nav-toggle { display: none; flex-direction: column; gap: 5px; padding: 8px; }
+.nav-toggle span { width: 20px; height: 1px; background: var(--text-primary); }
+
+@media (max-width: 720px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    position: absolute;
+    top: 66px; left: 0; right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .nav-links.open { max-height: 320px; }
+  .nav-links a:not(.nav-cta), .nav-links button:not(.nav-cta) { width: 100%; padding: 16px 24px; border-bottom: 1px solid var(--border); text-align: left; }
+  .nav-cta { margin: 16px 24px; display: inline-block; }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 15px 26px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover { background: var(--accent-bright); }
+.btn-ghost { border-color: var(--border-strong); color: var(--text-primary); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
+.btn-sm { font-size: 12.5px; padding: 9px 16px; }
+
+/* ---------- Stats strip ---------- */
+.stats-strip {
+  padding-top: 60px;
+  padding-bottom: 0px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .stats-strip { padding-top: 40px; padding-bottom: 0px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--bg-tint);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px 22px;
+  text-align: left;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-top: 90px; padding-bottom: 130px; text-align: center; }
+.hero-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(50px, 9vw, 96px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 auto 20px;
+}
+.hero-role {
+  font-size: 19px;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+.hero-sub {
+  color: var(--text-secondary);
+  font-size: 18px;
+  max-width: 42ch;
+  margin: 0 auto 40px;
+}
+@media (max-width: 640px) {
+  .hero { padding-top: 56px; padding-bottom: 90px; }
+}
+
+/* ---------- Item cards (Games / Current Projects / Systems) ---------- */
+.item-list { display: flex; flex-direction: column; gap: 64px; }
+.item-row {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+@media (max-width: 760px) {
+  .item-row { grid-template-columns: 1fr; gap: 22px; }
+}
+
+.item-thumb {
+  position: relative;
+  aspect-ratio: 16/10;
+  background: var(--bg-tint);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+.item-thumb-label {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+}
+.play-btn {
+  position: absolute;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(11,11,12,0.6);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.play-btn:hover { border-color: var(--accent); transform: scale(1.06); }
+.play-btn svg { width: 14px; height: 14px; fill: var(--text-primary); margin-left: 2px; }
+
+.item-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.item-desc { color: var(--text-secondary); font-size: 15.5px; max-width: 50ch; margin-bottom: 20px; }
+.item-role { font-size: 15px; color: var(--accent-bright); margin-bottom: 12px; }
+
+.item-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.item-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.item-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 5px 11px;
+}
+
+/* ---------- Contact ---------- */
+.footer-inner { padding-top: 150px; padding-bottom: 70px; text-align: center; }
+@media (max-width: 640px) { .footer-inner { padding-top: 90px; } }
+.footer-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(28px, 3.8vw, 38px);
+  margin-bottom: 18px;
+}
+.footer-username {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--accent-bright);
+  margin-bottom: 36px;
+}
+.footer-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+.footer-fine { font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">Peter Saleh</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#games" data-nav>Games</a>
+      <a href="#scratch" data-nav>From Scratch</a>
+      <a href="#projects" data-nav>Current Projects</a>
+      <a href="#systems" data-nav>Systems</a>
+      <a href="#contact" data-nav>Contact</a>
+      <button class="nav-cta" data-discord-btn>Copy Discord User</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1 class="hero-headline" data-reveal>Peter Saleh</h1>
+    <p class="hero-role" data-reveal>Roblox Scripter</p>
+    <p class="hero-sub" data-reveal>I build combat, backend, and OOP systems for Roblox games.</p>
+    <div data-reveal>
+      <button class="btn btn-primary" data-discord-btn>Copy Discord Username</button>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="wrap stats-grid">
+      <div class="stat-card">
+        <p class="stat-value">+3</p>
+        <p class="stat-label">Years Experience</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-value">10+</p>
+        <p class="stat-label">Games Worked On</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-value">5+</p>
+        <p class="stat-label">Systems Built</p>
+      </div>
+      <button class="stat-card" data-discord-btn style="width: 100%;">
+        <p class="stat-value">Discord</p>
+        <p class="stat-label">Contact Me</p>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="games" class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>Games I've Worked On</h2>
+        <p class="section-lede">Live games I helped build or maintain.</p>
+      </div>
+      <div class="item-list" id="gamesList" data-reveal></div>
+    </div>
+  </section>
+
+  <!-- NEW SECTION: Built From Scratch -->
+  <section id="scratch" class="section section-tint">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>Built From Scratch</h2>
+        <p class="section-lede">Complete games I developed entirely from the ground up.</p>
+      </div>
+      <div class="item-list" id="scratchList" data-reveal></div>
+    </div>
+  </section>
+
+  <section id="projects" class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>Currently Working On</h2>
+        <p class="section-lede">What I'm actively building right now.</p>
+      </div>
+      <div class="item-list" id="projectsList" data-reveal></div>
+    </div>
+  </section>
+
+  <section id="systems" class="section section-tint">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>Systems I've Built</h2>
+        <p class="section-lede">Core systems I build into every project.</p>
+      </div>
+      <div class="item-list" id="systemsList" data-reveal></div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap footer-inner" data-reveal>
+    <h2 class="footer-headline">Want to work together?</h2>
+    <p class="footer-username" id="discordUsername">@petersaleh</p>
+    <div class="footer-actions">
+      <button class="btn btn-primary" data-discord-btn>Copy Discord Username</button>
+      <a href="#" class="btn btn-ghost" id="robloxProfileBtn">View Roblox Profile</a>
+    </div>
+    <p class="footer-fine">© 2026 Peter Saleh</p>
+  </div>
+</footer>
+
+<script>
+/* ==================================================================
+   EDIT EVERYTHING HERE — nothing below this file needs to change.
+   ================================================================== */
+
+const DISCORD_USERNAME = "peter2030130"; // <-- حط اليوزر بتاعك هنا (اللي هيتنسخ للناس)
+const ROBLOX_PROFILE_URL = "https://www.roblox.com/users/866876779/profile"; 
+
+const gamesWorkedOn = [
+  {
+    name: "[ALPHA] Derelict",
+    description: "Conducted comprehensive codebase audits and resolved deep-rooted logical bugs to stabilize core game mechanics.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534199408000766162/Screenshot_2026-08-04_164936.png?ex=6a73420a&is=6a71f08a&hm=14a4258e3115488373c43c9f8945a097efb77e33ef1ce62a19f9ed0c068363e9",
+    robloxUrl: "https://www.roblox.com/games/9756976552/Derelict",
+    ownerDiscordUsername: "demonicsapphire" // حط يوزر الاونر هنا
+  },
+  {
+    name: "Work at a Hotel RP!",
+    description: "Developed dynamic in-game task and event systems, while handling UI scripting and comprehensive bug fixes across the codebase.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534199987754500177/Screenshot_2026-08-04_170242.png?ex=6a734295&is=6a71f115&hm=1c5c8c8bc4065382845864f789ab02b40169a8f3226cfeb68e26c093076936f0",
+    robloxUrl: "https://www.roblox.com/games/17428520796/Work-at-a-Hotel-RP",
+    ownerDiscordUsername: "brendencd" // حط يوزر الاونر هنا
+  },
+  {
+    name: "Manage Your Own Country 2",
+    description: "Designed the client prediction system that removed hit-registration lag.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534200347994624052/Screenshot_2026-08-04_170417.png?ex=6a7342eb&is=6a71f16b&hm=f9382fe72ca01248214adf3072aaae36f684ec218e3b464f565da8faed294c0f",
+    robloxUrl: "https://www.roblox.com/games/13563451042/Manage-Your-Own-Country-2",
+    ownerDiscordUsername: "its_logan6" // حط يوزر الاونر هنا
+  }
+];
+
+const gamesFromScratch = [
+  {
+    name: "Brainrot Factory RNG",
+    description: "Engineered a complete RNG-based idle loop, featuring a weighted rarity gacha system, interactive conveyor mechanics, and scalable passive income algorithms.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534200502932471819/Screenshot_2026-08-04_163122.png?ex=6a73430f&is=6a71f18f&hm=456528a5044b970511d201943e4b4b23314784e027027ba03fbc655da1fe4d4d",
+    robloxUrl: "https://www.roblox.com/games/119072221165912/Brainrot-Factory-RNG",
+    githubUrl: "" 
+  },
+  {
+    name: "Licking Sim Game",
+    description: "Developed an interaction-driven simulator focusing on entity merging mechanics, featuring optimized progression loops and persistent data management.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534201470944022578/Screenshot_2026-08-04_170836.png?ex=6a7343f6&is=6a71f276&hm=3de968f52530ad068e09c9573de38a648c0cb775b1bc0ff6c07d292261965c97",
+    robloxUrl: "https://www.roblox.com/games/82114781448512/Licking-Sim-Game",
+    githubUrl: "" 
+  }
+];
+
+const currentProjects = [
+  {
+    name: "Manage Your Own Country 2",
+    role: "Co-Owner, all programing work",
+    building: "A tutorial system.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534200347994624052/Screenshot_2026-08-04_170417.png?ex=6a7342eb&is=6a71f16b&hm=f9382fe72ca01248214adf3072aaae36f684ec218e3b464f565da8faed294c0f"
+  },
+  {
+    name: "Hello Neighbor Act 3 Alpha",
+    role: "Owner",
+    building: "A new currency system, new AI, and new combat mechanics.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534202239370133515/Screenshot_2026-08-04_171137.png?ex=6a7344ad&is=6a71f32d&hm=5e9759ac062dbd9a9dc4c4d0eb079e96b3247f979a62c49e061b0a2aa09eb3bc"
+  },
+  {
+    name: "[NEW] Swing Obby For Celebrities!",
+    role: "Co-Owner",
+    building: "Anti-exploit protections and load testing before public launch.",
+    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534202867496255691/Screenshot_2026-08-04_171418.png?ex=6a734543&is=6a71f3c3&hm=67ce41eca7c7b984a9328a94ec73f8fd010aabeb1f9d16cdb217815785f39e75"
+  }
+];
+
+const systems = [
+  {
+    name: "Network-Optimized Conveyor",
+    sentence: "Server-authoritative, client-rendered movement architecture keeping network traffic under 4 KB/s via precise TweenService replication.",
+    tags: ["Optimization", "Networking", "Client-Side Rendering"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/Screen%20Recording%202026-05-24%20120032.mp4",
+    robloxUrl: "https://www.roblox.com/games/132487475110918/Baggage-Conveyor-Task",
+    githubUrl: "https://github.com/peterraafat1/Baggage-Conveyor-Task"
+  },
+  {
+    name: "Cinematic Dialogue System",
+    sentence: "An immersive NPC interaction framework featuring procedural head-tracking, dynamic over-the-shoulder camera transitions, and branching dialogue trees.",
+    tags: ["Camera Math", "UI Integration", "CFrame"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/2Screen%20Recording%202026-06-03%20035506.mp4",
+    robloxUrl: "https://www.roblox.com/games/106583182850195/Dumbell-Experience",
+    githubUrl: ""
+  },
+  {
+    name: "ZZZ Dynamic Camera",
+    sentence: "Advanced dynamic camera controller featuring smooth interpolation and precise framing logic for high-action combat scenarios.",
+    tags: ["Camera Math", "Cinematics", "CFrame"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/Recording%202026-08-05%20122416%20(1).mp4",
+    robloxUrl: "https://www.roblox.com/games/127426595704693/ZZZ",
+    githubUrl: ""
+  },
+  {
+    name: "Responsive Gun Framework",
+    sentence: "A highly responsive firearm framework built for reliable hit registration, seamless replication, and fluid combat loops.",
+    tags: ["Combat", "Weapons", "Raycasting"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/Screen%20Recording%202026-05-30%20001403.mp4",
+    robloxUrl: "https://www.roblox.com/games/113098970000027/gun-system",
+    githubUrl: ""
+  },
+  {
+    name: "Interactive Map Creator",
+    sentence: "An intuitive terrain manipulation tool utilizing complex grid math for real-time level building and vertex adjustments.",
+    tags: ["Tooling", "Grid Math", "Interactive"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/Recording%202026-08-05%20125226%20(1)%20(1).mp4",
+    robloxUrl: "https://www.roblox.com/games/82057947123533/Simple-map-creator",
+    githubUrl: ""
+  },
+  {
+    name: "Grid-Snapping Placement",
+    sentence: "Robust placement mechanics for Tower Defense, featuring strict server-side validation and seamless client-side visual previews.",
+    tags: ["Placement", "Raycasting", "Grid Math"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/1Screen%20Recording%202026-06-02%20203547.mp4",
+    robloxUrl: "https://www.roblox.com/games/105174378525963/Simple-Placement-System",
+    githubUrl: ""
+  },
+  {
+    name: "State-Driven Cooking System",
+    sentence: "A multi-step interactive crafting framework managing complex ingredient states and localized UI synchronization.",
+    tags: ["Gameplay", "UI Integration", "State Management"],
+    thumbnail: "",
+    video: "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/Screen%20Recording%202026-05-30%20161927.mp4",
+    robloxUrl: "https://www.roblox.com/games/109881052064340/Cooking-System",
+    githubUrl: ""
+  }
+];
+
+/* ================= Copy to Clipboard Function ================= */
+function copyToClipboard(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = btn.innerText;
+    btn.innerText = "Copied!";
+    setTimeout(() => { btn.innerText = originalText; }, 2000);
+  });
+}
+
+/* ================= Helpers ================= */
+function thumbHTML(thumbnail, label, withPlay, videoUrl) {
+  if (videoUrl) {
+    return `<div class="item-thumb" style="padding: 0; background: #000;">
+              <video src="${videoUrl}" autoplay loop muted playsinline controls style="width: 100%; height: 100%; object-fit: cover;">
+                <source src="${videoUrl}" type="video/mp4">
+              </video>
+            </div>`;
+  }
+  const bg = thumbnail ? `style="background-image:url('${thumbnail}')"` : "";
+  const inner = thumbnail
+    ? (withPlay ? `<button class="play-btn" aria-label="Play video"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>` : "")
+    : `<span class="item-thumb-label">${label}</span>`;
+  return `<div class="item-thumb" ${bg}>${inner}</div>`;
+}
+
+/* ================= Profile links & Global Buttons ================= */
+document.getElementById("discordUsername").textContent = "@" + DISCORD_USERNAME;
+const robloxBtn = document.getElementById("robloxProfileBtn");
+robloxBtn.href = ROBLOX_PROFILE_URL;
+robloxBtn.target = "_blank";
+robloxBtn.rel = "noopener";
+
+// Setup global Discord buttons to copy username
+document.querySelectorAll("[data-discord-btn]").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    copyToClipboard(btn, DISCORD_USERNAME);
+  });
+});
+
+/* ================= RENDER: Games I've Worked On ================= */
+document.getElementById("gamesList").innerHTML = gamesWorkedOn.map(g => `
+  <div class="item-row">
+    ${thumbHTML(g.thumbnail, "Game thumbnail", false)}
+    <div>
+      <p class="item-name">${g.name}</p>
+      <p class="item-desc">${g.description}</p>
+      <div class="item-actions">
+        ${g.robloxUrl ? `<a class="btn btn-ghost btn-sm" href="${g.robloxUrl}" target="_blank" rel="noopener">Play Game</a>` : ""}
+        ${g.ownerDiscordUsername ? `<button class="btn btn-ghost btn-sm" onclick="copyToClipboard(this, '${g.ownerDiscordUsername}')">Copy Owner's Discord</button>` : ""}
+      </div>
+    </div>
+  </div>
+`).join("");
+
+/* ================= RENDER: Built From Scratch ================= */
+document.getElementById("scratchList").innerHTML = gamesFromScratch.map(g => `
+  <div class="item-row">
+    ${thumbHTML(g.thumbnail, "Game thumbnail", false)}
+    <div>
+      <p class="item-name">${g.name}</p>
+      <p class="item-desc">${g.description}</p>
+      <div class="item-actions">
+        ${g.robloxUrl ? `<a class="btn btn-ghost btn-sm" href="${g.robloxUrl}" target="_blank" rel="noopener">Play Game</a>` : ""}
+        ${g.githubUrl ? `<a class="btn btn-ghost btn-sm" href="${g.githubUrl}" target="_blank" rel="noopener">View GitHub</a>` : ""}
+      </div>
+    </div>
+  </div>
+`).join("");
+
+/* ================= RENDER: Currently Working On ================= */
+document.getElementById("projectsList").innerHTML = currentProjects.map(p => `
+  <div class="item-row">
+    ${thumbHTML(p.thumbnail, "Project thumbnail", false)}
+    <div>
+      <p class="item-name">${p.name}</p>
+      <p class="item-role">${p.role}</p>
+      <p class="item-desc">${p.building}</p>
+    </div>
+  </div>
+`).join("");
+
+/* ================= RENDER: Systems I've Built ================= */
+document.getElementById("systemsList").innerHTML = systems.map(s => `
+  <div class="item-row">
+    ${thumbHTML(s.thumbnail, "Video preview", true, s.video)}
+    <div>
+      <p class="item-name">${s.name}</p>
+      <p class="item-desc">${s.sentence}</p>
+      <div class="item-tags" style="margin-bottom: 16px;">
+        ${s.tags.map(t => `<span class="item-tag">${t}</span>`).join("")}
+      </div>
+      <div class="item-actions">
+        ${s.robloxUrl ? `<a class="btn btn-ghost btn-sm" href="${s.robloxUrl}" target="_blank" rel="noopener">Play on Roblox</a>` : ""}
+        ${s.githubUrl ? `<a class="btn btn-ghost btn-sm" href="${s.githubUrl}" target="_blank" rel="noopener">View GitHub</a>` : ""}
+      </div>
+    </div>
+  </div>
+`).join("");
+
+/* ================= Scroll reveal ================= */
+const revealItems = document.querySelectorAll("[data-reveal]");
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealItems.forEach(el => io.observe(el));
+} else {
+  revealItems.forEach(el => el.classList.add("is-visible"));
+}
+
+/* ================= Scrollspy nav ================= */
+const navLinks = document.querySelectorAll("[data-nav]");
+const sections = ["top", "games", "scratch", "projects", "systems", "contact"]
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
+
+function updateActiveNav() {
+  let currentId = sections[0].id;
+  const scrollPos = window.scrollY + 120;
+  sections.forEach(sec => {
+    if (sec.offsetTop <= scrollPos) currentId = sec.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${currentId}`);
+  });
+}
+window.addEventListener("scroll", updateActiveNav, { passive: true });
+updateActiveNav();
+
+/* ================= Mobile nav toggle ================= */
+const navToggle = document.getElementById("navToggle");
+const navLinksEl = document.getElementById("navLinks");
+navToggle.addEventListener("click", () => {
+  const isOpen = navLinksEl.classList.toggle("open");
+  navToggle.setAttribute("aria-expanded", String(isOpen));
+});
+navLinksEl.querySelectorAll("a").forEach(a => {
+  a.addEventListener("click", () => navLinksEl.classList.remove("open"));
+});
+</script>
+</body>
+</html>
+"""
+
+with open("index-v5-final.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
