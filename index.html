@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -463,7 +463,7 @@ const BASE_ASSET_URL = "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Asset
 const gamesWorkedOn = [
   {
     name: "[ALPHA] Derelict",
-    stat: "17M+ Visits", // <-- عدل الرقم ده للي يناسب اللعبة
+    stat: "26.3M+ Visits",
     description: "Conducted comprehensive codebase audits and resolved deep-rooted logical bugs to stabilize core game mechanics.",
     thumbnail: BASE_ASSET_URL + "Derelict.png",
     robloxUrl: "https://www.roblox.com/games/9756976552/Derelict",
@@ -471,7 +471,7 @@ const gamesWorkedOn = [
   },
   {
     name: "Work at a Hotel RP!",
-    stat: "5K+ Active", // <-- ممكن تحط رقم الاكتف او الزيارات
+    stat: "14.9M+ Visits",
     description: "Developed dynamic in-game task and event systems, while handling UI scripting and comprehensive bug fixes across the codebase.",
     thumbnail: BASE_ASSET_URL + "BlauHotel.png",
     robloxUrl: "https://www.roblox.com/games/17428520796/Work-at-a-Hotel-RP",
@@ -479,7 +479,7 @@ const gamesWorkedOn = [
   },
   {
     name: "Manage Your Own Country 2",
-    stat: "1.2M+ Visits", 
+    stat: "19.5M+ Visits", 
     description: "Designed the client prediction system that removed hit-registration lag.",
     thumbnail: BASE_ASSET_URL + "Manageyourowncountry.png",
     robloxUrl: "https://www.roblox.com/games/13563451042/Manage-Your-Own-Country-2",
@@ -508,6 +508,7 @@ const currentProjects = [
   {
     name: "Hello Neighbor Act 3 Alpha",
     role: "Owner",
+    stat: "10.6M+ Visits",
     building: "A new currency system, new AI, and new combat mechanics.",
     thumbnail: BASE_ASSET_URL + "HelloneighborAct.png"
   }
@@ -657,7 +658,10 @@ document.getElementById("projectsList").innerHTML = currentProjects.map(p => `
   <div class="item-row">
     ${thumbHTML(p.thumbnail, "Project thumbnail", false)}
     <div>
-      <h3 class="item-name">${p.name}</h3>
+      <h3 class="item-name">
+        ${p.name}
+        ${p.stat ? `<span class="item-stat-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>${p.stat}</span>` : ""}
+      </h3>
       <p class="item-role">${p.role}</p>
       <p class="item-desc">${p.building}</p>
     </div>
