@@ -1,4 +1,4 @@
-html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -441,25 +441,27 @@ h2 {
 const DISCORD_USERNAME = "peter2030130"; // <-- حط اليوزر بتاعك هنا (اللي هيتنسخ للناس)
 const ROBLOX_PROFILE_URL = "https://www.roblox.com/users/866876779/profile"; 
 
+const BASE_ASSET_URL = "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/";
+
 const gamesWorkedOn = [
   {
     name: "[ALPHA] Derelict",
     description: "Conducted comprehensive codebase audits and resolved deep-rooted logical bugs to stabilize core game mechanics.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534199408000766162/Screenshot_2026-08-04_164936.png?ex=6a73420a&is=6a71f08a&hm=14a4258e3115488373c43c9f8945a097efb77e33ef1ce62a19f9ed0c068363e9",
+    thumbnail: BASE_ASSET_URL + "Derelict.png",
     robloxUrl: "https://www.roblox.com/games/9756976552/Derelict",
     ownerDiscordUsername: "demonicsapphire" // حط يوزر الاونر هنا
   },
   {
     name: "Work at a Hotel RP!",
     description: "Developed dynamic in-game task and event systems, while handling UI scripting and comprehensive bug fixes across the codebase.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534199987754500177/Screenshot_2026-08-04_170242.png?ex=6a734295&is=6a71f115&hm=1c5c8c8bc4065382845864f789ab02b40169a8f3226cfeb68e26c093076936f0",
+    thumbnail: BASE_ASSET_URL + "BlauHotel.png",
     robloxUrl: "https://www.roblox.com/games/17428520796/Work-at-a-Hotel-RP",
     ownerDiscordUsername: "brendencd" // حط يوزر الاونر هنا
   },
   {
     name: "Manage Your Own Country 2",
     description: "Designed the client prediction system that removed hit-registration lag.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534200347994624052/Screenshot_2026-08-04_170417.png?ex=6a7342eb&is=6a71f16b&hm=f9382fe72ca01248214adf3072aaae36f684ec218e3b464f565da8faed294c0f",
+    thumbnail: BASE_ASSET_URL + "Manageyourowncountry.png",
     robloxUrl: "https://www.roblox.com/games/13563451042/Manage-Your-Own-Country-2",
     ownerDiscordUsername: "its_logan6" // حط يوزر الاونر هنا
   }
@@ -469,14 +471,14 @@ const gamesFromScratch = [
   {
     name: "Brainrot Factory RNG",
     description: "Engineered a complete RNG-based idle loop, featuring a weighted rarity gacha system, interactive conveyor mechanics, and scalable passive income algorithms.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534200502932471819/Screenshot_2026-08-04_163122.png?ex=6a73430f&is=6a71f18f&hm=456528a5044b970511d201943e4b4b23314784e027027ba03fbc655da1fe4d4d",
+    thumbnail: BASE_ASSET_URL + "BrainrotFactory.png",
     robloxUrl: "https://www.roblox.com/games/119072221165912/Brainrot-Factory-RNG",
     githubUrl: "" 
   },
   {
     name: "Licking Sim Game",
     description: "Developed an interaction-driven simulator focusing on entity merging mechanics, featuring optimized progression loops and persistent data management.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534201470944022578/Screenshot_2026-08-04_170836.png?ex=6a7343f6&is=6a71f276&hm=3de968f52530ad068e09c9573de38a648c0cb775b1bc0ff6c07d292261965c97",
+    thumbnail: BASE_ASSET_URL + "LickingSimGame.png",
     robloxUrl: "https://www.roblox.com/games/82114781448512/Licking-Sim-Game",
     githubUrl: "" 
   }
@@ -487,7 +489,7 @@ const currentProjects = [
     name: "Hello Neighbor Act 3 Alpha",
     role: "Owner",
     building: "A new currency system, new AI, and new combat mechanics.",
-    thumbnail: "https://cdn.discordapp.com/attachments/1534199337717071995/1534202239370133515/Screenshot_2026-08-04_171137.png?ex=6a7344ad&is=6a71f32d&hm=5e9759ac062dbd9a9dc4c4d0eb079e96b3247f979a62c49e061b0a2aa09eb3bc"
+    thumbnail: BASE_ASSET_URL + "HelloneighborAct.png"
   }
 ];
 
@@ -705,7 +707,3 @@ navLinksEl.querySelectorAll("a").forEach(a => {
 </script>
 </body>
 </html>
-"""
-
-with open("index-v5-final.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
