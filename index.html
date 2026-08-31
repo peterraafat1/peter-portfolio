@@ -334,10 +334,11 @@ h2 {
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links" id="navLinks">
+      <!-- Moved Systems to the top -->
+      <a href="#systems" data-nav>Systems</a>
       <a href="#games" data-nav>Games</a>
       <a href="#scratch" data-nav>From Scratch</a>
       <a href="#projects" data-nav>Current Projects</a>
-      <a href="#systems" data-nav>Systems</a>
       <a href="#contact" data-nav>Contact</a>
       <button class="nav-cta" data-discord-btn>Copy Discord User</button>
     </div>
@@ -378,7 +379,19 @@ h2 {
 
 <main>
 
-  <section id="games" class="section">
+  <!-- Systems Moved to Top, keeping regular .section background -->
+  <section id="systems" class="section">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2>Systems I've Built</h2>
+        <p class="section-lede">Core systems I build into every project.</p>
+      </div>
+      <div class="item-list" id="systemsList" data-reveal></div>
+    </div>
+  </section>
+
+  <!-- Games is now tinted to keep alternating pattern -->
+  <section id="games" class="section section-tint">
     <div class="wrap">
       <div class="section-head" data-reveal>
         <h2>Games I've Worked On</h2>
@@ -388,8 +401,7 @@ h2 {
     </div>
   </section>
 
-  <!-- NEW SECTION: Built From Scratch -->
-  <section id="scratch" class="section section-tint">
+  <section id="scratch" class="section">
     <div class="wrap">
       <div class="section-head" data-reveal>
         <h2>Built From Scratch</h2>
@@ -399,23 +411,14 @@ h2 {
     </div>
   </section>
 
-  <section id="projects" class="section">
+  <!-- Projects tinted to keep alternating pattern -->
+  <section id="projects" class="section section-tint">
     <div class="wrap">
       <div class="section-head" data-reveal>
         <h2>Currently Working On</h2>
         <p class="section-lede">What I'm actively building right now.</p>
       </div>
       <div class="item-list" id="projectsList" data-reveal></div>
-    </div>
-  </section>
-
-  <section id="systems" class="section section-tint">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <h2>Systems I've Built</h2>
-        <p class="section-lede">Core systems I build into every project.</p>
-      </div>
-      <div class="item-list" id="systemsList" data-reveal></div>
     </div>
   </section>
 
@@ -677,7 +680,8 @@ if ("IntersectionObserver" in window) {
 
 /* ================= Scrollspy nav ================= */
 const navLinks = document.querySelectorAll("[data-nav]");
-const sections = ["top", "games", "scratch", "projects", "systems", "contact"]
+// Updated order for scrollspy to work smoothly
+const sections = ["top", "systems", "games", "scratch", "projects", "contact"]
   .map(id => document.getElementById(id))
   .filter(Boolean);
 
