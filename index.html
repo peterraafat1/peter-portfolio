@@ -289,7 +289,26 @@ h2 {
   font-weight: 600;
   font-size: 24px;
   margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
+
+/* New Stat Badge Style */
+.item-stat-badge {
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+  color: var(--accent-bright);
+  background: rgba(230, 154, 95, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(230, 154, 95, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .item-desc { color: var(--text-secondary); font-size: 15.5px; max-width: 50ch; margin-bottom: 20px; }
 .item-role { font-size: 15px; color: var(--accent-bright); margin-bottom: 12px; }
 
@@ -329,12 +348,11 @@ h2 {
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="#top" class="nav-logo">Peter Raafat</a>
+    <a href="#top" class="nav-logo">Peter Saleh</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links" id="navLinks">
-      <!-- Moved Systems to the top -->
       <a href="#systems" data-nav>Systems</a>
       <a href="#games" data-nav>Games</a>
       <a href="#scratch" data-nav>From Scratch</a>
@@ -347,7 +365,7 @@ h2 {
 
 <header class="hero" id="top">
   <div class="wrap">
-    <h1 class="hero-headline" data-reveal>Peter Raafat</h1>
+    <h1 class="hero-headline" data-reveal>Peter Saleh</h1>
     <p class="hero-role" data-reveal>Roblox Scripter</p>
     <p class="hero-sub" data-reveal>I build combat, backend, and OOP systems for Roblox games.</p>
     <div data-reveal>
@@ -379,7 +397,6 @@ h2 {
 
 <main>
 
-  <!-- Systems Moved to Top, keeping regular .section background -->
   <section id="systems" class="section">
     <div class="wrap">
       <div class="section-head" data-reveal>
@@ -390,7 +407,6 @@ h2 {
     </div>
   </section>
 
-  <!-- Games is now tinted to keep alternating pattern -->
   <section id="games" class="section section-tint">
     <div class="wrap">
       <div class="section-head" data-reveal>
@@ -411,7 +427,6 @@ h2 {
     </div>
   </section>
 
-  <!-- Projects tinted to keep alternating pattern -->
   <section id="projects" class="section section-tint">
     <div class="wrap">
       <div class="section-head" data-reveal>
@@ -441,32 +456,34 @@ h2 {
    EDIT EVERYTHING HERE — nothing below this file needs to change.
    ================================================================== */
 
-const DISCORD_USERNAME = "peter2030130"; // <-- حط اليوزر بتاعك هنا (اللي هيتنسخ للناس)
+const DISCORD_USERNAME = "peter2030130"; 
 const ROBLOX_PROFILE_URL = "https://www.roblox.com/users/866876779/profile"; 
-
 const BASE_ASSET_URL = "https://cdn.jsdelivr.net/gh/peterraafat1/Portfolio-Assets/";
 
 const gamesWorkedOn = [
   {
     name: "[ALPHA] Derelict",
+    stat: "17M+ Visits", // <-- عدل الرقم ده للي يناسب اللعبة
     description: "Conducted comprehensive codebase audits and resolved deep-rooted logical bugs to stabilize core game mechanics.",
     thumbnail: BASE_ASSET_URL + "Derelict.png",
     robloxUrl: "https://www.roblox.com/games/9756976552/Derelict",
-    ownerDiscordUsername: "demonicsapphire" // حط يوزر الاونر هنا
+    ownerDiscordUsername: "demonicsapphire"
   },
   {
     name: "Work at a Hotel RP!",
+    stat: "5K+ Active", // <-- ممكن تحط رقم الاكتف او الزيارات
     description: "Developed dynamic in-game task and event systems, while handling UI scripting and comprehensive bug fixes across the codebase.",
     thumbnail: BASE_ASSET_URL + "BlauHotel.png",
     robloxUrl: "https://www.roblox.com/games/17428520796/Work-at-a-Hotel-RP",
-    ownerDiscordUsername: "brendencd" // حط يوزر الاونر هنا
+    ownerDiscordUsername: "brendencd"
   },
   {
     name: "Manage Your Own Country 2",
+    stat: "1.2M+ Visits", 
     description: "Designed the client prediction system that removed hit-registration lag.",
     thumbnail: BASE_ASSET_URL + "Manageyourowncountry.png",
     robloxUrl: "https://www.roblox.com/games/13563451042/Manage-Your-Own-Country-2",
-    ownerDiscordUsername: "its_logan6" // حط يوزر الاونر هنا
+    ownerDiscordUsername: "its_logan6"
   }
 ];
 
@@ -607,7 +624,10 @@ document.getElementById("gamesList").innerHTML = gamesWorkedOn.map(g => `
   <div class="item-row">
     ${thumbHTML(g.thumbnail, "Game thumbnail", false)}
     <div>
-      <p class="item-name">${g.name}</p>
+      <h3 class="item-name">
+        ${g.name}
+        ${g.stat ? `<span class="item-stat-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>${g.stat}</span>` : ""}
+      </h3>
       <p class="item-desc">${g.description}</p>
       <div class="item-actions">
         ${g.robloxUrl ? `<a class="btn btn-ghost btn-sm" href="${g.robloxUrl}" target="_blank" rel="noopener">Play Game</a>` : ""}
@@ -622,7 +642,7 @@ document.getElementById("scratchList").innerHTML = gamesFromScratch.map(g => `
   <div class="item-row">
     ${thumbHTML(g.thumbnail, "Game thumbnail", false)}
     <div>
-      <p class="item-name">${g.name}</p>
+      <h3 class="item-name">${g.name}</h3>
       <p class="item-desc">${g.description}</p>
       <div class="item-actions">
         ${g.robloxUrl ? `<a class="btn btn-ghost btn-sm" href="${g.robloxUrl}" target="_blank" rel="noopener">Play Game</a>` : ""}
@@ -637,7 +657,7 @@ document.getElementById("projectsList").innerHTML = currentProjects.map(p => `
   <div class="item-row">
     ${thumbHTML(p.thumbnail, "Project thumbnail", false)}
     <div>
-      <p class="item-name">${p.name}</p>
+      <h3 class="item-name">${p.name}</h3>
       <p class="item-role">${p.role}</p>
       <p class="item-desc">${p.building}</p>
     </div>
@@ -649,7 +669,7 @@ document.getElementById("systemsList").innerHTML = systems.map(s => `
   <div class="item-row">
     ${thumbHTML(s.thumbnail, "Video preview", true, s.video)}
     <div>
-      <p class="item-name">${s.name}</p>
+      <h3 class="item-name">${s.name}</h3>
       <p class="item-desc">${s.sentence}</p>
       <div class="item-tags" style="margin-bottom: 16px;">
         ${s.tags.map(t => `<span class="item-tag">${t}</span>`).join("")}
